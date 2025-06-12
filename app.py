@@ -32,6 +32,7 @@ def get_db():
             CREATE TABLE IF NOT EXISTS notes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
+                title TEXT,
                 content TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY(user_id) REFERENCES users(id)
@@ -57,11 +58,13 @@ def home():
     db = get_db()
 
     if request.method == "POST":
+        title = request.form.get("title")
         content = request.form["content"]
+
         if content.strip():
             db.execute(
-                "INSERT INTO notes (user_id, content) VALUES (?, ?)",
-                (session["user_id"], content)
+                "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)",
+                (session["user_id"], title, content)
             )
             db.commit()
             flash("Not başarıyla eklendi.", "success")
