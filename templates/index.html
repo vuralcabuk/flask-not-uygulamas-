@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ana Sayfa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Hoş Geldin!</h1>
+    <nav>
+        <button onclick="location.href='/logout'">Çıkış Yap</button>
+        <button onclick="location.href='/'">Ana Sayfa</button>
+        <button onclick="location.href='/about'">Hakkımda</button>
+        <button onclick="location.href='/notes'">Notlar</button>
+        <button onclick="location.href='/settings'">Ayarlar</button>
+    </nav>
+    <h2>Hoş geldin, {{ username }}!</h2>
+
+    <form method="POST" action="{{ url_for('home') }}">
+        <textarea name="content" rows="4" cols="50" placeholder="Yeni not yaz..." required></textarea><br>
+        <button type="submit">Notu Kaydet</button>
+    </form>
+
+    <h3>Notlarım:</h3>
+    <ul>
+        {% for note in notes %}
+            <li>{{ note['content'] }} <br> <small>{{ note['created_at'] }}</small></li>
+        {% else %}
+            <li>Henüz notunuz yok.</li>
+        {% endfor %}
+    </ul>
+
+    {% for note in notes %}
+      <div style="margin-bottom: 10px;">
+        <p>{{ note["content"] }}</p>
+        <form action="{{ url_for('delete_note', note_id=note['id']) }}" method="post" style="display: inline;">
+          <button type="submit">Sil</button>
+        </form>
+        <a href="{{ url_for('edit_note', note_id=note['id']) }}">Düzenle</a>
+      </div>
+    {% endfor %}
+
+</body>
+</html>

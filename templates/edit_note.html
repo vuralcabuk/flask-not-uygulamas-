@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <title>Notu Düzenle</title>
+</head>
+<body>
+    <h2>Notu Düzenle</h2>
+    <form action="{{ url_for('update_note', note_id=note['id']) }}" method="post">
+        <textarea name="content" rows="5" cols="50">{{ note['content'] }}</textarea><br><br>
+        <button type="submit">Kaydet</button>
+        <a href="{{ url_for('home') }}">İptal</a>
+    </form>
+</body>
+</html>
