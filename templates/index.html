@@ -3,53 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Ana Sayfa</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border: none;
+        }
+        .form-control, .form-control:focus {
+            background-color: #2c2c2c;
+            color: #fff;
+            border-color: #444;
+        }
+        .btn-outline-light:hover {
+            background-color: #ffffff;
+            color: #000;
+        }
+        textarea {
+            resize: none;
+        }
+        ::placeholder {
+            color: #eee;
+            opacity: 1;
+            font-style: italic;
+        }
+    </style>
+
 </head>
 <body>
-    <header>
-        <h1>Hoş Geldin!</h1>
-        <nav>
-            <button onclick="location.href='/logout'">Çıkış Yap</button>
-            <button onclick="location.href='/'">Ana Sayfa</button>
-            <button onclick="location.href='/about'">Hakkımda</button>
-            <button onclick="location.href='/notes'">Notlar</button>
-            <button onclick="location.href='/settings'">Ayarlar</button>
-        </nav>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand" href="#">Not Defteri</a>
+        <div class="ms-auto">
+            <a class="btn btn-outline-light me-2" href="/">Ana Sayfa</a>
+            <a class="btn btn-outline-light me-2" href="/about">Hakkımda</a>
+            <a class="btn btn-outline-light me-2" href="/notes">Notlar</a>
+            <a class="btn btn-outline-light me-2" href="/settings">Ayarlar</a>
+            <a class="btn btn-danger" href="/logout">Çıkış Yap</a>
+        </div>
+    </nav>
 
-    <main>
-        <section>
-            <h2>Merhaba, {{ username }}!</h2>
+    <div class="container mt-5">
+        <h2 class="mb-4">Merhaba, {{ username }}!</h2>
 
-            <h3>Yeni Not Ekle</h3>
-            <form method="POST" action="{{ url_for('home') }}">
-                <input type="text" name="title" placeholder="Not başlığı">
-                <textarea name="content" placeholder="Not içeriği" required></textarea>
-                <button type="submit">Not Ekle</button>
+        <div class="card p-4 mb-4">
+            <h4>Yeni Not Ekle</h4>
+            <form method="POST" action="{{ url_for('notes.home') }}">
+                <div class="mb-3">
+                    <input type="text" name="title" class="form-control" placeholder="📝 Örneğin: Ders notları">
+                </div>
+                <div class="mb-3">
+                    <textarea name="content" class="form-control" rows="4" placeholder="📄 Not içeriği yazın... örneğin: Python'da Flask Blueprint yapısı..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Not Ekle</button>
             </form>
-        </section>
+        </div>
 
-        <section>
-            <h3>Notlarım</h3>
+        <div class="card p-4">
+            <h4>Notlarım</h4>
             {% if notes %}
-                <ul>
+                <ul class="list-group list-group-flush mt-3">
                     {% for note in notes %}
-                        <li>
-                            <strong>{{ note['title'] or "Başlıksız Not" }}</strong><br>
-                            {{ note['content'] }}<br>
-                            <small>{{ note['created_at'] }}</small><br>
-
-                            <form action="{{ url_for('delete_note', note_id=note['id']) }}" method="post" style="display: inline;">
-                                <button type="submit">Sil</button>
-                            </form>
-                            <a href="{{ url_for('edit_note', note_id=note['id']) }}">Düzenle</a>
+                        <li class="list-group-item bg-dark text-light border-secondary mb-2">
+                            <h5>{{ note['title'] or "Başlıksız Not" }}</h5>
+                            <p>{{ note['content'] }}</p>
+                            <small class="text-muted">{{ note['created_at'] }}</small>
+                            <div class="mt-2">
+                                <form action="{{ url_for('notes.delete_note', note_id=note['id']) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                                </form>
+                                <a href="{{ url_for('notes.edit_note', note_id=note['id']) }}" class="btn btn-sm btn-outline-warning">Düzenle</a>
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
-                <p>Henüz notunuz yok.</p>
+                <p class="text-muted mt-3">Henüz notunuz yok.</p>
             {% endif %}
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
