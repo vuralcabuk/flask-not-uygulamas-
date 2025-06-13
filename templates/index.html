@@ -18,6 +18,10 @@
             color: #fff;
             border-color: #444;
         }
+        .form-control::placeholder {
+            color: #ccc;
+            opacity: 1;
+        }
         .btn-outline-light:hover {
             background-color: #ffffff;
             color: #000;
@@ -25,12 +29,8 @@
         textarea {
             resize: none;
         }
-        ::placeholder {
-            color: #eee;
-            opacity: 1;
-            font-style: italic;
-        }
     </style>
+
 
 </head>
 <body>
@@ -49,7 +49,7 @@
         <h2 class="mb-4">Merhaba, {{ username }}!</h2>
 
         <div class="card p-4 mb-4">
-            <h4>Yeni Not Ekle</h4>
+            <h4 class="text-white">Yeni Not Ekle</h4>
             <form method="POST" action="{{ url_for('notes.home') }}">
                 <div class="mb-3">
                     <input type="text" name="title" class="form-control" placeholder="📝 Örneğin: Ders notları">
@@ -62,7 +62,7 @@
         </div>
 
         <div class="card p-4">
-            <h4>Notlarım</h4>
+            <h4 class="text-white">Notlarım</h4>
             {% if notes %}
                 <ul class="list-group list-group-flush mt-3">
                     {% for note in notes %}
